@@ -30,27 +30,7 @@
           "is_primary": false
         }
       ],
-      "role": "Lead author; designed and ran the MEA experiments, performed analysis, and drafted the manuscript",
-      "credit": [
-        "Conceptualization",
-        "Methodology",
-        "Software",
-        "Investigation",
-        "Formal analysis",
-        "Data curation",
-        "Visualization",
-        "Writing – original draft",
-        "Writing – review & editing",
-        "Project administration"
-      ],
-      "corresponding": false,
-      "notes": "PhD candidate in BME, co-advised by Aviad Hai. Research focus on neural correlates of consciousness, electrophysiology, MEA cultures, and altered states. Listed on both Hai Lab and Center for Sleep and Consciousness people pages.",
-      "sources": [
-        "https://hailab.wisc.edu/People.html",
-        "https://centerforsleepandconsciousness.psychiatry.wisc.edu/people/ido-haber/",
-        "https://www.linkedin.com/in/idohaber/",
-        "https://openalex.org/A5016160542"
-      ]
+      "corresponding": false
     },
     {
       "order": 2,
@@ -70,22 +50,7 @@
           "is_primary": true
         }
       ],
-      "role": "Developed the MEA platform and primary cortical neuron plating protocol used in this study",
-      "credit": [
-        "Methodology",
-        "Resources",
-        "Investigation",
-        "Writing – review & editing"
-      ],
-      "corresponding": false,
-      "notes": "ECE PhD '24 alumnus of the Hai Lab. Authored the in-house MEA plating protocol document used by the lab. Now postdoctoral researcher (Belton Lab). ORCID confirmed via OpenAlex profile.",
-      "sources": [
-        "https://hailab.wisc.edu/People.html",
-        "https://grad.wisc.edu/2023/11/28/ilhan-bok/",
-        "https://www.linkedin.com/in/ibok/",
-        "https://openalex.org/A5046403141",
-        "https://orcid.org/0000-0002-4481-7843"
-      ]
+      "corresponding": false
     },
     {
       "order": 3,
@@ -105,19 +70,7 @@
           "is_primary": true
         }
       ],
-      "role": "Built the original code infrastructure for processing and analyzing MEA recordings from the psychoplastogen project",
-      "credit": [
-        "Software",
-        "Data curation",
-        "Formal analysis",
-        "Writing – review & editing"
-      ],
-      "corresponding": false,
-      "notes": "BME PhD at UW–Madison; worked in the Hai Lab on analysis pipelines for the psychoplastogen MEA dataset. Also did prior work in the Saha Lab on CAR T cells. The legacy codebase under /Users/bkutler4/... is from him. OpenAlex shows a single CAR-T paper under his name and confirms UW–Madison affiliation.",
-      "sources": [
-        "https://www.linkedin.com/in/benjamin-kutler-7a5382255/",
-        "https://openalex.org/A5120136380"
-      ]
+      "corresponding": false
     },
     {
       "order": 4,
@@ -137,17 +90,7 @@
           "is_primary": true
         }
       ],
-      "role": "Undergraduate researcher; assisted with MEA experiments and characterization of psychedelic effects on neuronal cultures",
-      "credit": [
-        "Investigation",
-        "Methodology",
-        "Writing – review & editing"
-      ],
-      "corresponding": false,
-      "notes": "Undergraduate researcher (BME '26) in the Hai Lab, focused on studying psychedelic effects on neuronal plasticity using MEAs and large-scale calcium imaging. Spelling corrected to 'Nornberg' per v1.7 docx. No public ORCID or email found.",
-      "sources": [
-        "https://hailab.wisc.edu/People.html"
-      ]
+      "corresponding": false
     },
     {
       "order": 5,
@@ -176,20 +119,7 @@
           "is_primary": false
         }
       ],
-      "role": "Collaborator providing expertise on cortical network electrophysiology, consciousness, and psychedelic mechanisms",
-      "credit": [
-        "Conceptualization",
-        "Methodology",
-        "Supervision",
-        "Writing – review & editing"
-      ],
-      "corresponding": false,
-      "notes": "Professor of Anesthesiology and Affiliate Professor of Neuroscience, UW–Madison. PhD in Neuroscience (UW). Lab investigates anesthesia, sleep, consciousness, and psychedelic mechanisms — directly relevant to a DOI/ketanserin MEA study. ORCID found via Google search; not directly verified on his department biosketch page.",
-      "sources": [
-        "https://anesthesia.wisc.edu/research/researchers/banks-laboratory/matthew-i-banks-biosketch/",
-        "https://neuro.wisc.edu/staff/banks-matthew-i/",
-        "https://orcid.org/0000-0002-1936-7529"
-      ]
+      "corresponding": false
     },
     {
       "order": 6,
@@ -227,25 +157,7 @@
           "is_primary": false
         }
       ],
-      "role": "Senior author and PI; supervised the project, provided lab resources, and led manuscript preparation",
-      "credit": [
-        "Conceptualization",
-        "Supervision",
-        "Resources",
-        "Funding acquisition",
-        "Project administration",
-        "Methodology",
-        "Writing – review & editing"
-      ],
-      "corresponding": true,
-      "notes": "Vilas Early Career Associate Professor, Department of Biomedical Engineering, UW–Madison. PI of Hai Lab. Office: 2112 Engineering Centers Building, 1550 Engineering Dr, Madison, WI 53706. Phone: (608) 890-3411. ORCID confirmed from his ORCID profile and OpenAlex.",
-      "sources": [
-        "https://engineering.wisc.edu/directory/profile/aviad-hai/",
-        "https://hailab.wisc.edu/Contact.html",
-        "https://www.waisman.wisc.edu/staff/hai-aviad/",
-        "https://orcid.org/0000-0002-4556-3048",
-        "https://openalex.org/A5056469818"
-      ]
+      "corresponding": true
     }
   ]
 }
