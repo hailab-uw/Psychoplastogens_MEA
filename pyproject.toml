@@ -1,0 +1,9 @@
+[project]
+name = "haber-pp-mea"
+version = "0.1.0"
+description = "Python helper scripts for the Haber PP MEA analysis pipeline"
+requires-python = ">=3.10"
+dependencies = [
+    "matplotlib",
+    "numpy",
+]

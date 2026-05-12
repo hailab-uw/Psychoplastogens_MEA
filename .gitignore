@@ -1,0 +1,42 @@
+# Data and generated artifacts
+data/
+.data/
+cache/
+logs/
+output/
+tmp/
+
+# Manuscript/private working material
+paper/
+literature/
+Tracks/
+docs/archive/
+*.docx
+*.pptx
+
+# Third-party SDKs and local tools
+TDTMatlabSDK/
+
+# Agent/local tool state
+.claude/
+.playwright-mcp/
+
+# Python temporaries
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+*.py[cod]
+
+# MATLAB temporaries
+*.asv
+*.mex*
+*.slxc
+slprj/
+
+# OS/IDE files
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/

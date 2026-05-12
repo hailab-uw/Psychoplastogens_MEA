@@ -1,0 +1,121 @@
+function fig_burst_rate(study, varargin)
+%FIG_BURST_RATE Export burst-rate summary statistics.
+%
+%   FIG_BURST_RATE(study) loads the cached burst rates for the requested
+%   study, applies the canonical burst-silence channel filter
+%   (drop pairs with both baseline and treatment burst rate <
+%   minRateThreshold; threshold == 0 drops only the (0, 0) pairs), then
+%   writes CSV/JSON numeric sidecars under output/fig{2,4}/stats/.
+%
+%   FIG_BURST_RATE(study, 'channels', 1:64,                          ...
+%                         'ignoreSilentChannels', true,              ...
+%                         'minRateThreshold', 0,                     ...
+%                         'excludeMeanMultiplierOutliers', false,    ...
+%                         'meanRateOutlierMultiplier', 15)
+%   overrides individual options. Defaults match
+%   src/figure_scripts/figures_burst_rate.m exactly.
+%
+% INPUTS:
+%   study  -  'doi' or 'ket'.
+%
+% OUTPUTS:
+%   CSV + JSON sidecars written to output/fig{2,4}/stats/.
+
+    cfg = project_config();
+
+    p = inputParser;
+    addRequired(p,  'study', @(s) any(strcmpi(s, {'doi','ket'})));
+    addParameter(p, 'channels',                       cfg.channels.default);
+    addParameter(p, 'ignoreSilentChannels',           true);
+    addParameter(p, 'silentMode',                     'both_zero', ...
+        @(s) any(strcmpi(s, {'baseline_min','both_zero','either_zero'})));
+    addParameter(p, 'minRateThreshold',               cfg.silent.min_rate_burst);
+    addParameter(p, 'excludeMeanMultiplierOutliers',  false);
+    addParameter(p, 'meanRateOutlierMultiplier',      cfg.outlier.mean_multiplier);
+    addParameter(p, 'outlierMode',                    cfg.outlier.mode, ...
+        @(s) any(strcmpi(s, {'none','tukey','percentile','mean_multiplier'})));
+    addParameter(p, 'outlierUpperPercentile',         cfg.outlier.upper_percentile);
+    addParameter(p, 'outlierIqrFactor',               cfg.outlier.iqr_factor);
+    addParameter(p, 'yScale',                         'linear', ...
+        @(s) any(strcmpi(s, {'linear','log'})));
+    parse(p, study, varargin{:});
+    opt = p.Results;
+    study = lower(opt.study);
+
+    [pairs, ~] = get_pairs_and_labels(cfg, study);
+    [bRates, tRates] = load_pair_metric(pairs, opt.channels, 'burstRates', cfg);
+
+    if isempty(bRates)
+        error('fig_burst_rate:NoData', ...
+            'No valid channels found across pairs after NaN drop.');
+    end
+
+    if opt.ignoreSilentChannels
+        switch lower(opt.silentMode)
+            case 'baseline_min'
+                nonSilent = bRates >= opt.minRateThreshold;
+            case 'both_zero'
+                if opt.minRateThreshold == 0
+                    nonSilent = ~(bRates == 0 & tRates == 0);
+                else
+                    nonSilent = ~(bRates < opt.minRateThreshold ...
+                               & tRates < opt.minRateThreshold);
+                end
+            case 'either_zero'
+                nonSilent = bRates >= opt.minRateThreshold ...
+                          & tRates >= opt.minRateThreshold;
+            otherwise
+                nonSilent = true(size(bRates));
+        end
+        bRates = bRates(nonSilent);
+        tRates = tRates(nonSilent);
+    end
+    % --- Outlier filtering (disabled by default; retained for sensitivity) ---
+    effectiveMode = opt.outlierMode;
+    if opt.excludeMeanMultiplierOutliers && strcmpi(opt.outlierMode, 'tukey')
+        effectiveMode = 'mean_multiplier';
+    end
+    [keepMask, outlierInfo] = robust_outlier_filter(bRates, tRates, ...
+        'mode',            effectiveMode, ...
+        'upperPercentile', opt.outlierUpperPercentile, ...
+        'multiplier',      opt.meanRateOutlierMultiplier, ...
+        'iqrFactor',       opt.outlierIqrFactor);
+    bRates = bRates(keepMask);
+    tRates = tRates(keepMask);
+    fprintf('Outlier filter (%s): dropped %d of %d channel observation(s) [cut=%.2f].\n', ...
+        outlierInfo.mode, outlierInfo.nDropped, outlierInfo.nTotal, ...
+        outlierInfo.upperCutBaseline);
+    if isempty(bRates)
+        error('fig_burst_rate:NoData', ...
+            'All channels filtered out before plotting.');
+    end
+
+    nCh         = numel(bRates);
+    pctIncrease = 100 * sum(tRates > bRates) / nCh;
+    pctDecrease = 100 * sum(tRates < bRates) / nCh;
+
+    statsDir = output_path(cfg, study, 'rates', 'stats');
+    if ~exist(statsDir, 'dir'); mkdir(statsDir); end
+
+    fprintf('fig_burst_rate(%s): n=%d, +%.1f%%, -%.1f%%\n', ...
+        study, nCh, pctIncrease, pctDecrease);
+
+    psStats = paired_stats(bRates, tRates);
+    stats = struct( ...
+        'study',            study, ...
+        'metric',           'burst_rate', ...
+        'unit',             'bursts/min', ...
+        'n_channels',       nCh, ...
+        'pct_increased',    pctIncrease, ...
+        'pct_decreased',    pctDecrease, ...
+        'median_baseline',  psStats.medianBaseline, ...
+        'median_treatment', psStats.medianTreatment, ...
+        'median_delta',     psStats.medianDelta, ...
+        'median_pct_change',psStats.medianPctChange, ...
+        'ci_pct_change_supportive', psStats.bootstrap.ciPctChange, ...
+        'p_bootstrap_supportive',   psStats.bootstrap.pPctChange, ...
+        'p_wilcoxon_paired_electrodes_descriptive', psStats.wilcoxon.p, ...
+        'hedges_g_av',      psStats.hedgesGav);
+    export_figure_stats(stats, fullfile(statsDir, ...
+        sprintf('%s_burst_rate_stats', study)));
+end
