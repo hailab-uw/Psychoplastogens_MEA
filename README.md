@@ -7,5 +7,6 @@ This repository is focused on code for preprocessing, analysis, and visualizatio
 - `src/`: source for configuration, preprocessing, analysis, figures, and utilities.
 - `scripts/`: command-line entrypoints for smoke tests, preprocessing, and figure generation.
 - `docs/`: selected technical notes for the analysis pipeline.
+- `authors.json` and `references.bib`: author metadata and bibliography.
 
 See `src/README.md` for the detailed module map and workflow.
