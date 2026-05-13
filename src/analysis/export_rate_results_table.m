@@ -25,7 +25,7 @@ function T = export_rate_results_table(varargin)
         specs = metric_specs();
         for mi = 1:numel(specs)
             m = specs(mi);
-            accum = collect_metric(pairs, cfg.channels.default, cfg, m);
+            accum = collect_metric(pairs, cfg.channels.recording, cfg, m);
             row = summarize_metric(study, labels.treatment, m, accum);
             rows{end + 1, 1} = row; %#ok<AGROW>
         end

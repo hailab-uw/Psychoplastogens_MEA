@@ -15,7 +15,7 @@ function results = run_connectivity(study, varargin)
 %   study  -  'doi' or 'ket'.
 %
 % Name-value options:
-%   'channels'       -  Channel list, default cfg.channels.default.
+%   'channels'       -  Channel list, default cfg.channels.recording.
 %   'binMs'          -  Bin width in ms, default 1.
 %   'maxLagMs'       -  Lag half-window in ms, default 100.
 %   'normalization'  -  'pearson' (default) | 'coeff' | 'none'.
@@ -37,7 +37,7 @@ function results = run_connectivity(study, varargin)
 
     p = inputParser;
     addRequired(p,  'study', @(s) any(strcmpi(s, {'doi','ket'})));
-    addParameter(p, 'channels',      cfg.channels.default);
+    addParameter(p, 'channels',      cfg.channels.recording);
     addParameter(p, 'binMs',         cfg.connectivity.bin_ms,         @(x) isscalar(x) && x > 0);
     addParameter(p, 'maxLagMs',      cfg.connectivity.max_lag_ms,     @(x) isscalar(x) && x > 0);
     addParameter(p, 'normalization', cfg.connectivity.normalization,  ...

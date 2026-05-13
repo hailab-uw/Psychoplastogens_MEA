@@ -24,7 +24,7 @@ function stats = fig_stats_bootstrap(study, varargin)
 %   'minRateThreshold'      -  burst only, default 0
 %   'nBootstrap'            -  default 10000
 %   'bootstrapSeed'         -  default 1
-%   'channels'              -  default cfg.channels.default
+%   'channels'              -  default cfg.channels.recording
 %
 % OUTPUTS:
 %   stats  -  Struct with .spike and .burst fields (see above).
@@ -39,7 +39,7 @@ function stats = fig_stats_bootstrap(study, varargin)
     addParameter(p, 'minRateThreshold',      cfg.silent.min_rate_burst);
     addParameter(p, 'nBootstrap',            cfg.stats.n_bootstrap);
     addParameter(p, 'bootstrapSeed',         cfg.stats.bootstrap_seed);
-    addParameter(p, 'channels',              cfg.channels.default);
+    addParameter(p, 'channels',              cfg.channels.recording);
     parse(p, study, varargin{:});
     opt = p.Results;
     study = lower(opt.study);

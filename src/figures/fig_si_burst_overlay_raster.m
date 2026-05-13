@@ -16,7 +16,7 @@ function fig_si_burst_overlay_raster(study, varargin)
 %   FIG_SI_BURST_OVERLAY_RASTER(study, 'Name', value, ...) options:
 %
 %     'pairIndex'    which pair to show (default: middle pair)
-%     'channels'     channel list (default cfg.channels.default)
+%     'channels'     channel list (default cfg.channels.recording)
 %     'tickWidth'    line width for tonic spikes (default 0.30)
 %     'burstTickW'   line width for burst onset ticks (default 0.60)
 %     'outDir'       output directory (default output/SI/)
@@ -35,7 +35,7 @@ function fig_si_burst_overlay_raster(study, varargin)
     p = inputParser;
     addRequired(p,  'study',      @(s) any(strcmpi(s, {'doi','ket'})));
     addParameter(p, 'pairIndex',  [],    @(x) isempty(x) || (isscalar(x) && x > 0));
-    addParameter(p, 'channels',   cfg.channels.default);
+    addParameter(p, 'channels',   cfg.channels.recording);
     addParameter(p, 'tickWidth',  0.30,  @(x) isscalar(x) && x > 0);
     addParameter(p, 'burstTickW', 0.60,  @(x) isscalar(x) && x > 0);
     addParameter(p, 'outDir',     output_path(cfg, '', 'si', ''));

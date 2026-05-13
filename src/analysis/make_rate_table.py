@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create rate-table artifacts from the exported analysis CSV."""
+"""Create manuscript rate-table artifacts from the exported CSV."""
 
 from __future__ import annotations
 
@@ -145,16 +145,14 @@ def update_spec(spec_path: Path, rows: list[list[str]]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--csv", default="output/tables/rate_results_table.csv")
-    parser.add_argument("--tex", default="output/tables/rate_results_table.tex")
-    parser.add_argument("--spec", default="")
+    parser.add_argument("--tex", default="paper/tables/rate_results_table.tex")
+    parser.add_argument("--spec", default="paper/spec.json")
     parser.add_argument("--update-spec", action="store_true")
     args = parser.parse_args()
 
     rows = read_rows(Path(args.csv))
     write_latex(rows, Path(args.tex))
     if args.update_spec:
-        if not args.spec:
-            raise SystemExit("--update-spec requires --spec PATH")
         update_spec(Path(args.spec), rows)
 
 

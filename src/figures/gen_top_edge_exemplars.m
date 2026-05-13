@@ -7,10 +7,9 @@
 %   distance (pitch units), and peak lag (ms). This lets you manually
 %   pick the best exemplar edge for the main-text figure.
 %
-%   Usage:
-%       addpath(genpath('src'));
-%       gen_top_edge_exemplars
-%   Or set study, pairIdx, and topN in the workspace before calling.
+%   Usage (from project root):
+%       run src/figures/gen_top_edge_exemplars.m
+%   Or modify the parameters below and run.
 
 %% ── Parameters (override these before calling) ─────────────────────────
 if ~exist('study',   'var'); study   = 'ket'; end   % 'doi' or 'ket'
@@ -26,7 +25,7 @@ fprintf('Study: %s, Pair %d/%d\n', study, pairIdx, numel(pairs));
 fprintf('  Baseline:  %s\n', pair.baseline);
 fprintf('  Treatment: %s\n\n', pair.treatment);
 
-channels = cfg.channels.default;
+channels = cfg.channels.recording;
 [bSpikes, tSpikes, bMeta, tMeta] = load_pair_spikes(pair, channels, cfg);
 
 %% ── Cross-correlation ───────────────────────────────────────────────────

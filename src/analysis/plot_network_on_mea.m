@@ -13,6 +13,8 @@ function ax = plot_network_on_mea(adjacency, varargin)
 %     'parent'         axes handle (default: gca)
 %     'nodeMetric'     (1 x nCh) per-channel scalar for node colour/size
 %                      (default: node degree from the binarised adjacency)
+%     'channels'       physical PZ5 channel list corresponding to adjacency
+%                      rows/columns (default: full 60-position MEA layout)
 %     'nodeCmap'       colormap name or matrix for nodes (default 'parula')
 %     'nodeCLim'       [lo hi] for node colour mapping (default data range)
 %     'nodeSizeRange'  [min max] marker area pts^2 (default [30 400])
@@ -55,6 +57,7 @@ function ax = plot_network_on_mea(adjacency, varargin)
     p = inputParser;
     addRequired(p,  'adjacency', @(x) isnumeric(x) && ismatrix(x) && size(x,1) == size(x,2));
     addParameter(p, 'parent',           []);
+    addParameter(p, 'channels',         []);
     addParameter(p, 'nodeMetric',       []);
     addParameter(p, 'nodeCmap',         'parula');
     addParameter(p, 'nodeCLim',         []);
@@ -88,7 +91,25 @@ function ax = plot_network_on_mea(adjacency, varargin)
     end
 
     layout = mea60_layout();
-    nCh    = layout.nCh;
+    nCh    = size(adjacency, 1);
+    if isempty(opt.channels)
+        channels = layout.channelList;
+    else
+        channels = opt.channels(:).';
+    end
+    if numel(channels) ~= nCh
+        error('plot_network_on_mea:ChannelCount', ...
+            'channels length (%d) must match adjacency size (%d).', ...
+            numel(channels), nCh);
+    end
+    [inLayout, layoutIdx] = ismember(channels, layout.channelList);
+    if ~all(inLayout)
+        error('plot_network_on_mea:UnknownChannel', ...
+            'channels contains PZ5 channel(s) not present in mea60_layout.');
+    end
+    xCoord = layout.xCoord(layoutIdx);
+    yCoord = layout.yCoord(layoutIdx);
+    mcsLabels = layout.mcsLabels(layoutIdx);
 
     % --- Grid frame and missing-corner markers (optional) ---
     if opt.showCorners
@@ -182,10 +203,10 @@ function ax = plot_network_on_mea(adjacency, varargin)
         v = keepValsSorted(e);
         ci = iIdx(e);
         cj = jIdx(e);
-        x1 = layout.xCoord(ci);
-        y1 = layout.yCoord(ci);
-        x2 = layout.xCoord(cj);
-        y2 = layout.yCoord(cj);
+        x1 = xCoord(ci);
+        y1 = yCoord(ci);
+        x2 = xCoord(cj);
+        y2 = yCoord(cj);
 
         t = (v - edgeCLim(1)) / max(edgeCLim(2) - edgeCLim(1), eps);
         t = min(max(t, 0), 1);
@@ -220,8 +241,8 @@ function ax = plot_network_on_mea(adjacency, varargin)
     end
 
     for c = 1:nCh
-        x = layout.xCoord(c);
-        y = layout.yCoord(c);
+        x = xCoord(c);
+        y = yCoord(c);
         v = nodeMetric(c);
         if isnan(v)
             faceColor = [0.8 0.8 0.8];
@@ -241,9 +262,9 @@ function ax = plot_network_on_mea(adjacency, varargin)
     % --- Optional MCS electrode labels on each node ---
     if opt.showLabels
         for c = 1:nCh
-            x = layout.xCoord(c);
-            y = layout.yCoord(c);
-            text(ax, x, y - 0.35, sprintf('%d', layout.mcsLabels(c)), ...
+            x = xCoord(c);
+            y = yCoord(c);
+            text(ax, x, y - 0.35, sprintf('%d', mcsLabels(c)), ...
                 'HorizontalAlignment', 'center', 'VerticalAlignment', 'top', ...
                 'FontSize', opt.labelFontSize, 'FontName', 'Arial', ...
                 'Color', [0.15 0.15 0.15]);

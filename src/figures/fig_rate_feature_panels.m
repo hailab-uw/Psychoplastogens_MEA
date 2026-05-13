@@ -13,7 +13,7 @@ function fig_rate_feature_panels(study, varargin)
 
     p = inputParser;
     addRequired(p,  'study', @(s) any(strcmpi(s, {'doi','ket'})));
-    addParameter(p, 'channels', cfg.channels.default);
+    addParameter(p, 'channels', cfg.channels.recording);
     parse(p, study, varargin{:});
     opt = p.Results;
     study = lower(opt.study);

@@ -13,7 +13,7 @@ function fig_rate_change_bar(metric, study, varargin)
 %   study   -  'doi' or 'ket'.
 %
 % Name-value options:
-%   'channels'              -  default cfg.channels.default
+%   'channels'              -  default cfg.channels.recording
 %   'rateEqualRelTol'       -  default 1e-6 (unchanged tolerance)
 %   'ignoreSilentChannels'  -  burst metric only, default true
 %   'minRateThreshold'      -  burst metric only, default 0 (bursts/min)
@@ -27,7 +27,7 @@ function fig_rate_change_bar(metric, study, varargin)
     p = inputParser;
     addRequired(p,  'metric', @(s) any(strcmpi(s, {'spike','burst'})));
     addRequired(p,  'study',  @(s) any(strcmpi(s, {'doi','ket'})));
-    addParameter(p, 'channels',              cfg.channels.default);
+    addParameter(p, 'channels',              cfg.channels.recording);
     addParameter(p, 'rateEqualRelTol',       1e-6);
     addParameter(p, 'ignoreSilentChannels',  true);
     addParameter(p, 'minRateThreshold',      0);

@@ -14,7 +14,7 @@ function fig_rate_panel_raster(study, varargin)
 %   FIG_RATE_PANEL_RASTER(study, 'Name', value, ...) options:
 %
 %     'pairIndex'  which pair from get_pairs_and_labels (default: mid)
-%     'channels'   explicit channel list (default: cfg.channels.default)
+%     'channels'   explicit channel list (default: cfg.channels.recording)
 %     'tickWidth'  line width of each spike tick (default 0.4)
 %     'outName'    override output filename stem
 %
@@ -32,7 +32,7 @@ function fig_rate_panel_raster(study, varargin)
     p = inputParser;
     addRequired(p,  'study', @(s) any(strcmpi(s, {'doi','ket'})));
     addParameter(p, 'pairIndex', []);
-    addParameter(p, 'channels',  cfg.channels.default);
+    addParameter(p, 'channels',  cfg.channels.recording);
     addParameter(p, 'tickWidth', style.rasterTickWidth);
     addParameter(p, 'outName',   '');
     addParameter(p, 'outDir',    fullfile(output_path(cfg, study, 'rates', ''), 'raster'));

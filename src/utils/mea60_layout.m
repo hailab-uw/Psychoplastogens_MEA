@@ -29,21 +29,22 @@ function layout = mea60_layout()
 %                          electrode pitches (1 unit = 100 um)
 %
 % Notes:
-%   - The electrode-label table was cross-checked against the MCS
-%     60StandardMEA datasheet.
+%   - The electrode-label table was cross-checked against
+%     docs/60StandardMEA_Layout.pdf.
 %   - The TDT PZ5 digitizer uses 4 banks of 16 channels.  The 16th
 %     channel of each bank is ground (PZ5 ch 16,32,48,64).  The 60
-%     signal channels occupy PZ5 ch [1:15, 17:31, 33:47, 49:63],
-%     which map sequentially to MCS 1-dim pins 1-60.
+%     MEA positions occupy PZ5 ch [1:15, 17:31, 33:47, 49:63],
+%     which map sequentially to MCS 1-dim pins 1-60.  On iR arrays,
+%     channel 15 is the internal reference and is excluded from analysis.
 %   - MCS labels: tens digit = column, units digit = row.
 %     (MCS convention: label = col*10 + row.  E.g. electrode 23 is
-%      column 2, row 3.  See the MCS 60StandardMEA datasheet, page 2.)
+%      column 2, row 3.  See docs/60StandardMEA_Layout.pdf page 2.)
 %   - On iR-model MEAs (60MEA100/10iR), MCS pin 15 (PZ5 ch 15) is the
 %     internal reference electrode — a large reference pad, not a
 %     recording electrode (59 recording + 1 ref).
-%     See the MCS 60StandardMEA datasheet and cfg.channels.reference.
+%     See docs/60StandardMEA_Layout.pdf and cfg.channels.reference.
 
-    % PZ5 physical channel numbers (60 signal channels, ground skipped).
+    % PZ5 physical channel numbers for the 60 MEA positions (ground skipped).
     chList = [1:15, 17:31, 33:47, 49:63];
 
     % MCS 1-dim pin numbers (sequential 1-60).

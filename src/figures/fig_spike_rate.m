@@ -24,7 +24,7 @@ function fig_spike_rate(study, varargin)
 
     p = inputParser;
     addRequired(p,  'study', @(s) any(strcmpi(s, {'doi','ket'})));
-    addParameter(p, 'channels',                       cfg.channels.default);
+    addParameter(p, 'channels',                       cfg.channels.recording);
     addParameter(p, 'ignoreSilentChannels',           true);
     addParameter(p, 'silentMode',                     cfg.silent.mode, ...
         @(s) any(strcmpi(s, {'baseline_min','both_zero','either_zero'})));

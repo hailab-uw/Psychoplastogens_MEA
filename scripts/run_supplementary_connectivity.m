@@ -27,7 +27,7 @@ for s = 1:numel(studies)
 
     [pairs, labels] = get_pairs_and_labels(cfg, study);
     nPairs = numel(pairs);
-    channels = cfg.channels.default;
+    channels = cfg.channels.recording;
 
     % =====================================================================
     % PART 1: DENSITY SWEEP

@@ -24,7 +24,7 @@ function [results, summaryTable, stats] = fig_connectivity_summary(study, vararg
     p = inputParser;
     addRequired(p,  'study', @(s) any(strcmpi(s, {'doi','ket'})));
     addParameter(p, 'results',        [],         @(x) isempty(x) || isstruct(x));
-    addParameter(p, 'channels',      cfg.channels.default);
+    addParameter(p, 'channels',      cfg.channels.recording);
     addParameter(p, 'binMs',          cfg.connectivity.bin_ms,         @(x) isscalar(x) && x > 0);
     addParameter(p, 'maxLagMs',       cfg.connectivity.max_lag_ms,     @(x) isscalar(x) && x > 0);
     addParameter(p, 'normalization',  cfg.connectivity.normalization);

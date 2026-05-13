@@ -13,7 +13,7 @@
 %   Only the first 3 minutes of each recording are plotted.
 
 cfg = project_config();
-channels = cfg.channels.default;
+channels = cfg.channels.recording;
 plotDurationSec = 570;  % 9.5 min (longest common window across all 18 recordings)
 binSec = 5;             % 5-second bins for smoother traces
 smoothSpan = 5;         % additional moving-average smoothing (number of bins)

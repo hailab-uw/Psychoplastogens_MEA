@@ -186,8 +186,7 @@ cfg.outlier.mean_multiplier  = 15;
 % pct_ylim             optional visual y-range for percent-change panels.
 %                      Empty means panels choose their own robust limits.
 % violin_ylim_supplement
-%                      legacy wider y-range used by archived sensitivity
-%                      figures.
+%                      wider y-range used by supplementary sensitivity views.
 cfg.pct.max_include            = 1000;
 cfg.pct.exclude_silenced       = false;
 cfg.pct.pct_ylim               = [];             % auto: rounds up from Tukey fence with whisker headroom
@@ -247,7 +246,7 @@ cfg.stats.min_n_wilcoxon_exact = 20;     % below this, use exact signrank
 % TDT PZ5 digitizer uses 4 banks of 16 channels (64 total).  The 16th
 % channel of each bank is connected to ground:
 %   PZ5 ch 16, 32, 48, 64 -> GROUND (verified: RMS ~2.4 uV)
-% The 60 signal channels occupy the remaining positions:
+% The 60 MEA positions occupy the remaining non-ground PZ5 channels:
 %   Bank A: PZ5 ch  1-15  -> MCS 1-dim pins  1-15
 %   Bank B: PZ5 ch 17-31  -> MCS 1-dim pins 16-30
 %   Bank C: PZ5 ch 33-47  -> MCS 1-dim pins 31-45
@@ -256,10 +255,12 @@ cfg.stats.min_n_wilcoxon_exact = 20;     % below this, use exact signrank
 % Data is stored with physical PZ5 numbering (no Synapse Mapper
 % compression), confirmed empirically by RMS survey of all 64 channels.
 %
-% See the MCS 60StandardMEA datasheet for the MCS pinout.
-cfg.channels.default   = [1:15, 17:31, 33:47, 49:63];  % 60 signal channels (physical PZ5 numbering)
-cfg.channels.ground    = [16, 32, 48, 64];              % PZ5 ground channels
-cfg.channels.reference = 15;                            % iR reference electrode (MCS pin 15)
+% See docs/60StandardMEA_Layout.pdf for the MCS pinout.
+cfg.channels.mea_positions = [1:15, 17:31, 33:47, 49:63];  % 60 MEA positions, physical PZ5 numbering
+cfg.channels.ground        = [16, 32, 48, 64];              % PZ5 ground channels
+cfg.channels.reference     = 15;                            % iR reference electrode (MCS pin 15)
+cfg.channels.recording     = setdiff(cfg.channels.mea_positions, cfg.channels.reference, 'stable');
+cfg.channels.default       = cfg.channels.recording;         % analysis default: 59 recording electrodes
 
 % =========================================================================
 % Dataset lists

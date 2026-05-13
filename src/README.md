@@ -47,10 +47,6 @@ src/
 │   ├── fig_connectivity_exemplar.m   # Xcorrelograms + adjacency + network graph.
 │   ├── fig_connectivity_cdf.m        # Edge-weight CDF panel.
 │   ├── fig_connectivity_summary.m    # Paired network-metric plots across pairs.
-│   ├── plot_heatmaps.py              # Python rendering for adjacency heatmaps.
-│   ├── plot_correlograms.py          # Python rendering for correlogram CSVs.
-│   ├── plot_population_firing_rate.m # Shared population-rate panel.
-│   ├── gen_top_edge_exemplars.m      # Manual exemplar edge review helper.
 │   ├── fig_si_zoomed_raster.m        # SI zoomed raster exemplars.
 │   ├── fig_si_burst_overlay_raster.m # SI burst-onset overlay rasters.
 │   ├── fig_si_connectivity_delta_montage.m
@@ -63,14 +59,13 @@ src/
 │   ├── run_connectivity.m        # Driver: load pair spikes -> xcorr -> metrics.
 │   ├── plot_network_on_mea.m     # Draw nodes + edges over the 60MEA geometry.
 │   ├── topographical_map.m       # 8x8 MEA grid heatmap of any per-channel metric.
-│   ├── make_rate_table.py        # Python helper for exported rate tables.
 │   └── network_metrics.m         # Density, clustering, path length, global
 │                                 # efficiency, modularity, small-worldness σ.
 └── README.md
 ```
 
-Nothing in `src/` hardcodes an absolute path. Dataset names and local paths
-route through `config/project_config.m`.
+Nothing in `src/` hardcodes a path or dataset name; everything routes through
+`config/project_config.m`.
 
 ## Workflow
 
@@ -115,7 +110,7 @@ route through `config/project_config.m`.
 
    % Or, for a one-off pair, load spikes directly and call the primitive:
    [pairs, ~]       = get_pairs_and_labels(cfg, 'doi');
-   [bSp, tSp, bMt]  = load_pair_spikes(pairs(1), cfg.channels.default, cfg);
+   [bSp, tSp, bMt]  = load_pair_spikes(pairs(1), cfg.channels.recording, cfg);
    conn             = connectivity_xcorr(bSp, 'durationSec', bMt.durationSec);
    metrics          = network_metrics(conn.adjacency);
 
@@ -158,13 +153,12 @@ route through `config/project_config.m`.
 | Bandpass            | 300-2500 Hz, 4th-order Butterworth, zero-phase |
 | Spike detection     | `TDTthresh` MODE=auto, POLARITY=-1, STD=5.0, TAU=5 |
 | Burst detection     | ISI <= 100 ms starts, ISI > 200 ms ends, min 5 spikes |
-| Channels            | Physical PZ5 signal channels `[1:15, 17:31, 33:47, 49:63]` |
+| Channels            | 59 recording electrodes; physical PZ5 MEA positions `[1:15, 17:31, 33:47, 49:63]` with internal reference channel 15 excluded |
 | Connectivity        | Pearson cross-correlation, 1 ms bins, +/-100 ms lag |
 | Primary graph       | 10% proportional edge density, 100 random null graphs |
 | Robustness checks   | Density sweep `[0.05 0.10 0.15 0.20]`; STTC with +/-50 ms synchrony window |
 
-## Notes
+## Archive
 
-The production repository omits exploratory and legacy archive scripts. The
-maintained preprocessing, analysis, and visualization code lives in the
-top-level `src/` subdirectories listed above.
+Historical proof-of-concept code has been removed from `src/`; this tree now
+contains only the active analysis and figure-generation pipeline.

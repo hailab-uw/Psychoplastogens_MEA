@@ -25,7 +25,7 @@ function fig_burst_rate(study, varargin)
 
     p = inputParser;
     addRequired(p,  'study', @(s) any(strcmpi(s, {'doi','ket'})));
-    addParameter(p, 'channels',                       cfg.channels.default);
+    addParameter(p, 'channels',                       cfg.channels.recording);
     addParameter(p, 'ignoreSilentChannels',           true);
     addParameter(p, 'silentMode',                     'both_zero', ...
         @(s) any(strcmpi(s, {'baseline_min','both_zero','either_zero'})));

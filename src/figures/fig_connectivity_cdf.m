@@ -17,7 +17,7 @@ function fig_connectivity_cdf(study, varargin)
     p = inputParser;
     addRequired(p,  'study', @(s) any(strcmpi(s, {'doi','ket'})));
     addParameter(p, 'results',       [],  @(x) isempty(x) || isstruct(x));
-    addParameter(p, 'channels',      cfg.channels.default);
+    addParameter(p, 'channels',      cfg.channels.recording);
     addParameter(p, 'binMs',         cfg.connectivity.bin_ms);
     addParameter(p, 'maxLagMs',      cfg.connectivity.max_lag_ms);
     addParameter(p, 'normalization', cfg.connectivity.normalization);

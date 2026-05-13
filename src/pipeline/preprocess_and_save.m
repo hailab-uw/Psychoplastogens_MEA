@@ -128,11 +128,11 @@ end
 
 % =========================================================================
 function result = process_one_dataset(blockPath, cfg)
-% Process a single TDT block. For every channel listed in
-% cfg.channels.default: load + filter -> detect spikes -> detect bursts ->
+% Process a single TDT block. For every recording channel listed in
+% cfg.channels.recording: load + filter -> detect spikes -> detect bursts ->
 % compute rates. Returns the cache struct (without metadata fields).
 
-    channels = cfg.channels.default;
+    channels = cfg.channels.recording;
     nCh      = numel(channels);
 
     % Per-channel storage.

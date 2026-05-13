@@ -2,8 +2,8 @@ function validate_channel_mapping()
 %VALIDATE_CHANNEL_MAPPING  Automated check of the 60MEA channel mapping.
 %
 %   VALIDATE_CHANNEL_MAPPING() runs a battery of checks against the
-%   mapping defined in mea60_layout.m and the MCS 60StandardMEA datasheet,
-%   page 2.
+%   mapping defined in mea60_layout.m and the MCS 60StandardMEA datasheet
+%   (docs/60StandardMEA_Layout.pdf, page 2).
 %
 %   Prints PASS/FAIL for each check.  Any failure indicates a mapping
 %   inconsistency that must be resolved before spatial analyses are valid.
@@ -16,9 +16,9 @@ function validate_channel_mapping()
 
     layout = mea60_layout();
 
-    % --- Check 1: 60 channels ---
+    % --- Check 1: 60 MEA positions ---
     [nPass, nFail] = check(layout.nCh == 60, ...
-        '60 signal channels', nPass, nFail);
+        '60 MEA positions', nPass, nFail);
 
     % --- Check 2: unique electrode labels ---
     [nPass, nFail] = check(numel(unique(layout.mcsLabels)) == 60, ...
@@ -98,10 +98,13 @@ function validate_channel_mapping()
 
     % --- Check 11: cross-validate with project_config ---
     cfg = project_config();
-    [nPass, nFail] = check(isequal(layout.channelList, cfg.channels.default), ...
-        'layout.channelList == cfg.channels.default', nPass, nFail);
+    [nPass, nFail] = check(isequal(layout.channelList, cfg.channels.mea_positions), ...
+        'layout.channelList == cfg.channels.mea_positions', nPass, nFail);
     [nPass, nFail] = check(cfg.channels.reference == 15, ...
         'cfg.channels.reference == 15', nPass, nFail);
+    [nPass, nFail] = check(~ismember(cfg.channels.reference, cfg.channels.recording) ...
+            && numel(cfg.channels.recording) == 59, ...
+        'cfg.channels.recording excludes reference and has 59 channels', nPass, nFail);
 
     % --- Check 12: legacy mapping cross-check ---
     % Spot-check a few entries from CartesianPlot_histo_Rasters_Dataset.m
