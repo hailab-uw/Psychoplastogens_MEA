@@ -1,4 +1,4 @@
-# Acute DOI exposure alters spontaneous cortical network activity
+# Acute DOI exposure alters cortical network dynamics
 
 This repository is focused on code for preprocessing, analysis, and visualization. It does not include raw recordings, caches, generated outputs, manuscript drafts, literature PDFs, or private lab documents.
 
