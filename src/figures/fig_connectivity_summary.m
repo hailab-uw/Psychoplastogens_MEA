@@ -370,8 +370,7 @@ end
 
 function save_spatial_decay_panel(results, colors, labels, slopeStats, outBase)
 %SAVE_SPATIAL_DECAY_PANEL  Standalone spatial-decay curve.
-    layout   = mea60_layout();
-    D        = layout.distanceMatrix;
+    D        = distance_matrix_for_results(results);
     upper    = triu(true(size(D)), 1);
     distVec  = D(upper);
 
@@ -499,8 +498,7 @@ function [m, lo, hi] = binned_ci(x, y, edges)
 end
 
 function out = spatial_decay_slope_test(results)
-    layout   = mea60_layout();
-    D        = layout.distanceMatrix;
+    D        = distance_matrix_for_results(results);
     upper    = triu(true(size(D)), 1);
     distVec  = D(upper);
     nPairs   = numel(results);
@@ -535,4 +533,25 @@ function slope = ols_slope(w, d)
     X = [ones(numel(d), 1), d(:)];
     b = X \ w(:);
     slope = b(2);
+end
+
+function D = distance_matrix_for_results(results)
+    layout = mea60_layout();
+    if isfield(results(1), 'options') && isfield(results(1).options, 'channels')
+        channels = results(1).options.channels(:).';
+    else
+        channels = layout.channelList;
+    end
+    [ok, idx] = ismember(channels, layout.channelList);
+    if ~all(ok)
+        error('fig_connectivity_summary:UnknownChannel', ...
+            'Connectivity result contains channels absent from MEA layout.');
+    end
+    nCh = size(results(1).baseline.adjacency, 1);
+    if numel(idx) ~= nCh
+        error('fig_connectivity_summary:DistanceSizeMismatch', ...
+            'Distance matrix channel count (%d) does not match adjacency size (%d).', ...
+            numel(idx), nCh);
+    end
+    D = layout.distanceMatrix(idx, idx);
 end

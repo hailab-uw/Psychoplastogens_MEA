@@ -153,8 +153,10 @@ function run_figures(varargin)
             try
                 fprintf('  [%2d] %s\n', nTotal, label);
                 pyScript = fullfile(cfg.paths.root, 'src', 'figures', 'plot_heatmaps.py');
-                [status, result] = system(sprintf('cd "%s" && uv run python "%s" --study %s', ...
-                    cfg.paths.root, pyScript, study));
+                mplDir = fullfile(cfg.paths.root, 'tmp', 'matplotlib');
+                if ~exist(mplDir, 'dir'); mkdir(mplDir); end
+                [status, result] = system(sprintf('cd "%s" && MPLCONFIGDIR="%s" python3 "%s" --study %s', ...
+                    cfg.paths.root, mplDir, pyScript, study));
                 if status ~= 0
                     error('run_figures:PythonFailed', ...
                         'plot_heatmaps.py failed:\n%s', result);
@@ -184,8 +186,10 @@ function run_figures(varargin)
             try
                 fprintf('  [%2d] %s\n', nTotal, label);
                 pyScript = fullfile(cfg.paths.root, 'src', 'figures', 'plot_correlograms.py');
-                [status, result] = system(sprintf('cd "%s" && uv run python "%s" --study %s', ...
-                    cfg.paths.root, pyScript, study));
+                mplDir = fullfile(cfg.paths.root, 'tmp', 'matplotlib');
+                if ~exist(mplDir, 'dir'); mkdir(mplDir); end
+                [status, result] = system(sprintf('cd "%s" && MPLCONFIGDIR="%s" python3 "%s" --study %s', ...
+                    cfg.paths.root, mplDir, pyScript, study));
                 if status ~= 0
                     error('run_figures:PythonFailed', ...
                         'plot_correlograms.py failed:\n%s', result);

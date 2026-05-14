@@ -72,8 +72,17 @@ function fig_rate_panel_traces(study, varargin)
     bCache = load_cache(pair.baseline,  cfg);
     tCache = load_cache(pair.treatment, cfg);
     if isempty(opt.channels)
-        chans = select_representative_channels( ...
-            bCache.spikeRates, tCache.spikeRates, opt.nChannels);
+        recordingChannels = cfg.channels.recording;
+        bRates = align_cache_metric(bCache.spikeRates, bCache.channelsUsed, recordingChannels);
+        tRates = align_cache_metric(tCache.spikeRates, tCache.channelsUsed, recordingChannels);
+        selectedIdx = select_representative_channels( ...
+            bRates, tRates, opt.nChannels);
+        chans = recordingChannels(selectedIdx);
+        if any(ismember(chans, [cfg.channels.ground, cfg.channels.reference]))
+            error('fig_rate_panel_traces:InvalidAutoChannels', ...
+                'Auto-selected channel list includes ground/reference channels: %s', ...
+                mat2str(chans));
+        end
     else
         chans = opt.channels(:)';
     end
@@ -305,4 +314,11 @@ function v = nice_round_uv(raw)
     else
         v = 100 * ceil(raw / 100);
     end
+end
+
+% =========================================================================
+function v = align_cache_metric(vec, chUsed, channels)
+    v = nan(numel(channels), 1);
+    [ok, idx] = ismember(channels(:).', chUsed(:).');
+    v(ok) = vec(idx(ok));
 end
