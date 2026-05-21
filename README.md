@@ -1,4 +1,4 @@
-# Acute DOI exposure alters cortical network dynamics
+# Acute DOI exposure drives cortical hyperexcitability and functional network remodeling
 
 This repository is focused on code for preprocessing, analysis, and visualization. It does not include raw recordings, caches, generated outputs, manuscript drafts, literature PDFs, or private lab documents.
 
