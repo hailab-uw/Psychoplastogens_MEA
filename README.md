@@ -1,8 +1,8 @@
-# Acute DOI exposure drives cortical hyperexcitability and functional network remodeling
+## Acute DOI exposure drives cortical hyperexcitability and functional network remodeling
 
 This repository conatains code for preprocessing, analysis, and visualization.
 
-## Codebase
+### Codebase
 
 - `src/`: source for configuration, preprocessing, analysis, figures, and utilities.
 - `scripts/`: command-line entrypoints for smoke tests, preprocessing, and figure generation.
@@ -11,7 +11,7 @@ This repository conatains code for preprocessing, analysis, and visualization.
 
 See `src/README.md` for the detailed module map and workflow.
 
-## Dependencies
+### Dependencies
 
 - MATLAB R2020a+ (plus Statistics and Machine Learning Toolbox, Signal Processing Toolbox)
 - TDT MATLAB SDK
